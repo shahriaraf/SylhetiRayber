@@ -1,0 +1,11 @@
+@import "tailwindcss";
+/* Default bullet color */
+.swiper-pagination-bullet {
+  background-color: black; /* gray or any color you want */
+  opacity: 1; /* make sure it's visible */
+}
+
+/* Active bullet color */
+.swiper-pagination-bullet-active {
+  background-color: #F2F2F2; /* Tailwind blue-500 color, change as you like */
+}
