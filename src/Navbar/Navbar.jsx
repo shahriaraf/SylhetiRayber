@@ -99,7 +99,7 @@ const Navbar = () => {
             )}
 
             {/* Mobile Menu Drawer */}
-            <div className={`fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-[#B6B09F] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
+            <div className={`fixed top-0 right-0 h-full w-56 max-w-[85vw] bg-[#B6B09F] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
                 menuOpen ? 'translate-x-0' : 'translate-x-full'
             }`}>
                 <div className="flex flex-col h-full">
