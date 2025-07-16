@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const links = [
         { name: "Home", path: "/" },
@@ -12,73 +12,142 @@ const Navbar = () => {
         { name: "Contact", path: "/contact" },
     ];
 
+    // Handle scroll effect
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 10);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Prevent body scroll when menu is open
+    useEffect(() => {
+        if (menuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [menuOpen]);
+
+    const Link = ({ to, children, className, onClick }) => (
+        <a href={to} className={className} onClick={onClick}>
+            {children}
+        </a>
+    );
+
     return (
-        <header className="bg-[#B6B09F] shadow-md sticky top-0 z-50">
-            <nav className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <>
+            <header className={`bg-[#B6B09F] sticky top-0 z-50 transition-all duration-300 ${
+                isScrolled ? 'shadow-lg backdrop-blur-sm' : 'shadow-md'
+            }`}>
+                <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between h-16 sm:h-20">
+                        {/* Brand */}
+                        <Link 
+                            to="/" 
+                            className="text-xl sm:text-2xl font-bold text-black hover:text-gray-700 transition-colors duration-200 flex-shrink-0"
+                        >
+                            SylhetiRayber
+                        </Link>
 
-                {/* Brand */}
-                <Link to="/" className="text-2xl font-bold text-black">
-                   SylhetiRayber
-                </Link>
+                        {/* Center Menu - Desktop */}
+                        <ul className="hidden lg:flex items-center gap-8 font-medium">
+                            {links.map(link => (
+                                <li key={link.name}>
+                                    <Link
+                                        to={link.path}
+                                        className="text-gray-700 hover:text-black transition-colors duration-200 py-2 px-3 rounded-md hover:bg-white/20 relative group"
+                                    >
+                                        {link.name}
+                                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
 
-                {/* Center Menu - Desktop */}
-                <ul className="hidden md:flex gap-8 font-medium">
-                    {links.map(link => (
-                        <li key={link.name}>
+                        {/* Login Button - Desktop */}
+                        <div className="hidden lg:block">
                             <Link
-                                to={link.path}
-                                className="text-gray-700 hover:text-black transition"
+                                to="/login"
+                                className="bg-black/50 text-white px-5 py-2.5 rounded-lg hover:bg-black/70 transition-all duration-200 font-medium shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95"
                             >
-                                {link.name}
+                                Login
                             </Link>
-                        </li>
-                    ))}
-                </ul>
+                        </div>
 
-                {/* Login Button - Desktop */}
-                <div className="hidden md:block">
-                    <Link
-                        to="/login"
-                        className="bg-black/50 text-white px-5 py-2 rounded-lg hover:bg-black/70 transition"
-                    >
-                        Login
-                    </Link>
-                     {/* style={{ boxShadow: "0px 0px 4px 0.10px #000000" }} */}
-                </div>
+                        {/* Mobile Menu Toggle */}
+                        <div className="lg:hidden">
+                            <button 
+                                onClick={() => setMenuOpen(!menuOpen)}
+                                className="p-2 rounded-md hover:bg-white/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black/20"
+                                aria-label="Toggle menu"
+                            >
+                                <Menu size={24} />
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+            </header>
 
-                {/* Mobile Menu Toggle */}
-                <div className="md:hidden">
-                    <button onClick={() => setMenuOpen(!menuOpen)}>
-                        {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-                    </button>
-                </div>
-            </nav>
-
-            {/* Mobile Menu */}
+            {/* Mobile Menu Overlay */}
             {menuOpen && (
-                <div className="md:hidden px-4 pb-4 space-y-2">
-                    <ul className="space-y-2 font-medium mb-2">
-                        {links.map(link => (
-                            <li key={link.name}>
-                                <Link
-                                    to={link.path}
-                                    onClick={() => setMenuOpen(false)}
-                                    className="block text-gray-700 hover:text-blue-600"
-                                >
-                                    {link.name}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                    <Link
-                        to="/login"
-                        className="bg-black/50 text-white px-5 py-2 rounded-lg hover:bg-black/70 transition"
-                    >
-                        Login
-                    </Link>
-                </div>
+                <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMenuOpen(false)} />
             )}
-        </header>
+
+            {/* Mobile Menu Drawer */}
+            <div className={`fixed top-0 right-0 h-full w-44 max-w-[85vw] bg-[#B6B09F] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
+                menuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}>
+                <div className="flex flex-col h-full">
+                    {/* Drawer Header */}
+                    <div className="flex items-center justify-between p-4 border-b border-black/10">
+                    
+                        <button 
+                            onClick={() => setMenuOpen(false)}
+                            className="p-2 rounded-md hover:bg-white/20 transition-colors duration-200"
+                            aria-label="Close menu"
+                        >
+                            <X size={24} />
+                        </button>
+                    </div>
+
+                    {/* Drawer Content */}
+                    <div className="flex-1 overflow-y-auto">
+                        <nav className="p-4">
+                            <ul className="space-y-2 font-medium">
+                                {links.map((link, index) => (
+                                    <li key={link.name}>
+                                        <Link
+                                            to={link.path}
+                                            onClick={() => setMenuOpen(false)}
+                                            className="block text-gray-700 hover:text-black hover:bg-white/20 px-4 py-3 rounded-lg transition-all duration-200 transform hover:translate-x-2"
+                                            style={{ animationDelay: `${index * 0.1}s` }}
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                    </div>
+
+                    {/* Drawer Footer */}
+                    <div className="p-4 border-t border-black/10">
+                        <Link
+                            to="/login"
+                            onClick={() => setMenuOpen(false)}
+                            className="block w-full text-center bg-black/50 text-white px-5 py-3 rounded-lg hover:bg-black/70 transition-all duration-200 font-medium shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95"
+                        >
+                            Login
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </>
     );
 };
 
