@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -13,33 +13,29 @@ const Banner = () => {
 
   const slideContent = [
     {
-      title: "Capturing Moments",
-      subtitle: "Professional Wedding Photography",
-      description: "Creating timeless memories with artistic vision and precision"
+      title: "মুহূর্ত ধারণ",
+      subtitle: "পেশাদার বিবাহ ফটোগ্রাফি",
+      description: "শিল্পমান দৃষ্টিভঙ্গি ও নিখুঁত দক্ষতায় চিরন্তন স্মৃতি রচনা"
     },
     {
-      title: "Creative Excellence",
-      subtitle: "Award-winning Photography Services",
-      description: "Bringing your special moments to life with stunning visuals"
+      title: "সৃজনশীল উৎকর্ষতা",
+      subtitle: "পুরস্কারপ্রাপ্ত ফটোগ্রাফি সেবা",
+      description: "চমৎকার ভিজ্যুয়ালের মাধ্যমে আপনার বিশেষ মুহূর্তগুলো জীবন্ত করে তোলা"
     },
     {
-      title: "Timeless Artistry",
-      subtitle: "Fearless Photography Approach",
-      description: "Documenting love stories with passion and creativity"
+      title: "চিরন্তন শিল্প",
+      subtitle: "নির্ভীক ফটোগ্রাফি দৃষ্টিভঙ্গি",
+      description: "ভালোবাসার গল্পগুলোকে আবেগ ও সৃজনশীলতায় লিপিবদ্ধ করা"
     }
   ];
 
-  // Auto-slide functionality
   useEffect(() => {
-
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % images.length);
     }, 4000);
-
     return () => clearInterval(interval);
   }, [images.length]);
 
-  // Preload images
   useEffect(() => {
     const preloadImages = async () => {
       const imagePromises = images.map((src) => {
@@ -75,13 +71,12 @@ const Banner = () => {
     setCurrentSlide(index);
   };
 
-
   if (isLoading) {
     return (
       <div className="h-[90vh] bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-lg font-medium">Loading...</p>
+          <p className="text-lg font-medium">লোড হচ্ছে...</p>
         </div>
       </div>
     );
@@ -89,31 +84,22 @@ const Banner = () => {
 
   return (
     <div className="relative h-[90vh] bg-black text-white overflow-hidden">
-      {/* Main Slider Container */}
       <div className="relative w-full h-full">
-        {/* Slides */}
         <div className="relative w-full h-full">
           {images.map((imgSrc, index) => (
             <div
               key={index}
               className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-                index === currentSlide 
-                  ? 'opacity-100 scale-100' 
-                  : 'opacity-0 scale-105'
+                index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
               }`}
             >
-              {/* Slide Image */}
               <img
                 src={imgSrc}
                 alt={`Slide ${index + 1}`}
                 className="w-full h-full object-cover"
                 loading={index === 0 ? 'eager' : 'lazy'}
               />
-              
-              {/* Enhanced Overlay with Gradient */}
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-black/50"></div>
-              
-              {/* Content Overlay */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
                   <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 transition-all duration-1000 ${
@@ -121,24 +107,21 @@ const Banner = () => {
                   }`}>
                     {slideContent[index].title}
                   </h1>
-                  
                   <h2 className={`text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium mb-6 text-gray-200 transition-all duration-1000 delay-200 ${
                     index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
                   }`}>
                     {slideContent[index].subtitle}
                   </h2>
-                  
                   <p className={`text-sm sm:text-base md:text-lg lg:text-xl mb-8 text-gray-300 max-w-2xl mx-auto transition-all duration-1000 delay-400 ${
                     index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
                   }`}>
                     {slideContent[index].description}
                   </p>
-                  
                   <button className={`bg-white/20 backdrop-blur-sm text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-white/30 transition-all duration-300 font-medium text-sm sm:text-base border border-white/20 hover:border-white/40 transform hover:scale-105 active:scale-95 ${
                     index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
                   }`}
-                  style={{ transitionDelay: index === currentSlide ? '600ms' : '0ms' }}>
-                    Explore Our Work
+                    style={{ transitionDelay: index === currentSlide ? '600ms' : '0ms' }}>
+                    আমাদের কাজ দেখুন
                   </button>
                 </div>
               </div>
@@ -146,7 +129,6 @@ const Banner = () => {
           ))}
         </div>
 
-        {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
           className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-2 sm:p-3 rounded-full hover:bg-white/30 transition-all duration-300 border border-white/20 hover:border-white/40 group z-10"
@@ -163,9 +145,6 @@ const Banner = () => {
           <ChevronRight size={20} className="group-hover:scale-110 transition-transform duration-200" />
         </button>
 
-      
-
-        {/* Pagination Dots */}
         <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 z-10">
           {images.map((_, index) => (
             <button
@@ -180,21 +159,18 @@ const Banner = () => {
             />
           ))}
         </div>
-
-    
       </div>
 
-      {/* Custom CSS for progress animation */}
       <style jsx>{`
         @keyframes progress {
           0% { width: 0%; }
           100% { width: 100%; }
         }
-        
+
         .progress-bar {
           animation: progress 4s linear infinite;
         }
-        
+
         @media (max-width: 640px) {
           .progress-bar {
             animation: progress 4s linear infinite;
