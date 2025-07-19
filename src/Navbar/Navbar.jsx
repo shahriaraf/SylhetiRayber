@@ -41,7 +41,7 @@ const Navbar = () => {
 
     return (
         <>
-            <header className={`bg-[#B6B09F] sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-lg backdrop-blur-sm' : 'shadow-md'}`}>
+            <header className={`bg-[#f8d8eb] sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-lg backdrop-blur-sm' : 'shadow-md'}`}>
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16 sm:h-20">
                         {/* Brand */}

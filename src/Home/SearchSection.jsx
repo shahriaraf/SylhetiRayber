@@ -187,7 +187,7 @@ const SearchSection = () => {
   );
 
   return (
-    <section className="bg-[#EAE4D5] py-12 px-4 relative">
+    <section className="bg-[#ffeefc] py-12 px-4 relative">
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold mb-8 text-gray-800">
           আপনার আদর্শ জীবনসঙ্গী খোঁজার যাত্রা শুরু করুন
@@ -235,7 +235,7 @@ const SearchSection = () => {
       )}
 
       {/* Mobile Search Drawer */}
-      <div className={`fixed bottom-0 left-0 right-0 bg-[#EAE4D5] z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+      <div className={`fixed bottom-0 left-0 right-0 bg-[#ffeefc] z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
         isDrawerOpen ? 'translate-y-0' : 'translate-y-full'
       }`}>
         <div className="max-h-[85vh] overflow-y-auto">

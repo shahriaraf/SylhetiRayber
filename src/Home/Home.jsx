@@ -60,7 +60,7 @@ const Home = () => {
       <SearchSection></SearchSection>
 
       {/* Happy Couple Section */}
-      <section id="couple" className="py-16 lg:py-24 bg-[#F2F2F2] text-center">
+      <section id="couple" className="py-16 lg:py-24 bg-[#ffeefc] text-center">
         {/* Title */}
         <div className="mb-12 px-4">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
@@ -81,7 +81,7 @@ const Home = () => {
           {/* Bride */}
           <div 
             style={{ boxShadow: "0px 0px 15px 0.15px #B6B09F" }}
-            className="flex flex-col sm:flex-row bg-[#EAE4D5] rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            className="flex flex-col sm:flex-row bg-[#fcf2fa] rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
           >
             <div className="relative flex-shrink-0">
               <img
@@ -108,7 +108,7 @@ const Home = () => {
           {/* Groom */}
           <div 
             style={{ boxShadow: "0px 0px 15px 0.15px #B6B09F" }}
-            className="flex flex-col sm:flex-row bg-[#EAE4D5] rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            className="flex flex-col sm:flex-row bg-[#fcf2fa] rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
           >
             <div className="relative flex-shrink-0">
               <img
@@ -161,7 +161,7 @@ const Home = () => {
           {/* Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto text-gray-800">
             {/* Ceremony Card */}
-            <div className="bg-[#EAE4D5] rounded-2xl p-6 lg:p-8 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1">
+            <div className="bg-[#fcf2fa] rounded-2xl p-6 lg:p-8 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1">
               <h3 className="text-xl lg:text-2xl font-bold mb-4">বিবাহ অনুষ্ঠান</h3>
               <div className="w-12 h-[2px] bg-pink-400 mb-4"></div>
               <p className="text-sm lg:text-base mb-6 leading-relaxed">
@@ -200,7 +200,7 @@ const Home = () => {
             </div>
 
             {/* Reception Card */}
-            <div className="bg-[#EAE4D5] rounded-2xl p-6 lg:p-8 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1">
+            <div className="bg-[#fcf2fa] rounded-2xl p-6 lg:p-8 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1">
               <h3 className="text-xl lg:text-2xl font-bold mb-4">সংবর্ধনা অনুষ্ঠান</h3>
               <div className="w-12 h-[2px] bg-blue-400 mb-4"></div>
               <p className="text-sm lg:text-base mb-6 leading-relaxed">
