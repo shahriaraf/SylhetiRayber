@@ -92,7 +92,7 @@ const Navbar = () => {
             )}
 
             {/* Mobile Menu Drawer */}
-            <div className={`fixed top-0 right-0 h-full w-56 max-w-[85vw] bg-[#B6B09F] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className={`fixed top-0 right-0 h-full w-56 max-w-[85vw] bg-[#f8d8eb] z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                 <div className="flex flex-col h-full">
                     {/* Drawer Header */}
                     <div className="flex items-center justify-between p-4 border-b border-black/10">
