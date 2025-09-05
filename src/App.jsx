@@ -1,18 +1,44 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, useLocation } from "react-router-dom";
 
-import Home from './Home/Home';
-import Navbar from './Navbar/Navbar';
-import Footer from './Footer/Footer';
+import Home from "./Home/Home";
+import Navbar from "./Navbar/Navbar";
+import Footer from "./Footer/Footer";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import PrivateRoute from "./components/PrivateRoute";
+import AllProfiles from "./pages/AllProfiles";
 
 const App = () => {
+  const location = useLocation();
+
+  // যেসব রাউটে Navbar/Footer লুকাতে হবে
+  const hideLayoutRoutes = ["/login", "/register"];
+
+  const shouldHideLayout = hideLayoutRoutes.includes(location.pathname);
+
   return (
     <div>
-     <Navbar></Navbar>
+      {/* Navbar শো করবে শুধু তখনই, যদি hideLayout না হয় */}
+      {!shouldHideLayout && <Navbar />}
 
       <Routes>
-        <Route path="/" element={<Home></Home>} />
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Protected Route */}
+        <Route
+          path="/সম্পর্ক খুঁজুন"
+          element={
+            <PrivateRoute>
+              <AllProfiles />
+            </PrivateRoute>
+          }
+        />
       </Routes>
-      <Footer></Footer>
+
+      {/* Footer শো করবে শুধু তখনই, যদি hideLayout না হয় */}
+      {!shouldHideLayout && <Footer />}
     </div>
   );
 };
