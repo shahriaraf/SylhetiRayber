@@ -5,29 +5,20 @@ import ProfileCard from '../components/ProfileCard';
 import { FiSearch } from 'react-icons/fi';
 
 const AllProfiles = () => {
-    // API থেকে পাওয়া আসল প্রোফাইল তালিকা
     const [profiles, setProfiles] = useState([]);
-    // ফিল্টার করার পর দেখানো প্রোফাইল তালিকা
     const [filteredProfiles, setFilteredProfiles] = useState([]);
-    
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    // ট্যাব সিস্টেমের জন্য স্টেট
     const [activeTab, setActiveTab] = useState('all'); // 'all', 'female', 'male'
-    
-    // সার্চ এবং ফিল্টারের জন্য স্টেট
     const [searchTerm, setSearchTerm] = useState('');
-    const [filters, setFilters] = useState({
-        religion: '',
-        city: '',
-    });
+    const [filters, setFilters] = useState({ religion: '', city: '' });
 
-    // ফিল্টার ড্রপডাউনের জন্য ইউনিক অপশন
     const [uniqueReligions, setUniqueReligions] = useState([]);
     const [uniqueCities, setUniqueCities] = useState([]);
 
-    // API থেকে প্রোফাইল Fetch করার জন্য useEffect
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Environment variable
+
     useEffect(() => {
         const fetchProfiles = async () => {
             const token = localStorage.getItem('token');
@@ -37,12 +28,12 @@ const AllProfiles = () => {
             }
 
             try {
-                const config = { headers: { 'Authorization': `Bearer ${token}` } };
-                const res = await axios.get('/api/users/profiles', config);
-                setProfiles(res.data);
-                setFilteredProfiles(res.data); // প্রাথমিকভাবে সব প্রোফাইল দেখানো হবে
+                const config = { headers: { Authorization: `Bearer ${token}` } };
+                const res = await axios.get(`${API_BASE_URL}/api/users/profiles`, config);
 
-                // ফিল্টারের জন্য ইউনিক ধর্ম এবং শহর বের করা
+                setProfiles(res.data);
+                setFilteredProfiles(res.data);
+
                 const religions = [...new Set(res.data.map(p => p.religion).filter(Boolean))];
                 const cities = [...new Set(res.data.map(p => p.currentCity).filter(Boolean))];
                 setUniqueReligions(religions);
@@ -58,37 +49,25 @@ const AllProfiles = () => {
         };
 
         fetchProfiles();
-    }, [navigate]);
+    }, [navigate, API_BASE_URL]);
 
-    // ট্যাব, সার্চ বা ফিল্টার পরিবর্তন হলে প্রোফাইল ফিল্টার করার জন্য useEffect
     useEffect(() => {
         let result = [...profiles];
 
-        // ১. ট্যাব অনুযায়ী ফিল্টার (কনে/বর)
-        if (activeTab === 'female') {
-            result = result.filter(profile => profile.gender === 'Female');
-        } else if (activeTab === 'male') {
-            result = result.filter(profile => profile.gender === 'Male');
-        }
+        if (activeTab === 'female') result = result.filter(p => p.gender === 'Female');
+        else if (activeTab === 'male') result = result.filter(p => p.gender === 'Male');
 
-        // ২. সার্চ টার্ম অনুযায়ী ফিল্টার (নাম দিয়ে)
         if (searchTerm) {
-            result = result.filter(profile => 
-                `${profile.firstName} ${profile.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+            result = result.filter(p =>
+                `${p.firstName} ${p.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
 
-        // ৩. ড্রপডাউন ফিল্টার অনুযায়ী ফিল্টার
-        if (filters.religion) {
-            result = result.filter(profile => profile.religion === filters.religion);
-        }
-        if (filters.city) {
-            result = result.filter(profile => profile.currentCity === filters.city);
-        }
+        if (filters.religion) result = result.filter(p => p.religion === filters.religion);
+        if (filters.city) result = result.filter(p => p.currentCity === filters.city);
 
         setFilteredProfiles(result);
     }, [profiles, activeTab, searchTerm, filters]);
-
 
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -109,21 +88,18 @@ const AllProfiles = () => {
     return (
         <div className="bg-gray-50 min-h-screen">
             <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                
-                {/* কন্ট্রোল সেকশন: ট্যাব, সার্চ এবং ফিল্টার */}
+
+                {/* ট্যাব, সার্চ ও ফিল্টার */}
                 <div className="p-6 rounded-xl mb-8">
-                    {/* ট্যাব সিস্টেম */}
                     <div className="flex border-b mb-6">
                         <button onClick={() => setActiveTab('all')} className={`py-2 px-6 font-semibold transition-colors duration-300 ${activeTab === 'all' ? 'border-b-2 border-pink-600 text-pink-600' : 'text-gray-600'}`}>সকল</button>
                         <button onClick={() => setActiveTab('female')} className={`py-2 px-6 font-semibold transition-colors duration-300 ${activeTab === 'female' ? 'border-b-2 border-pink-600 text-pink-600' : 'text-gray-600'}`}>কনে</button>
                         <button onClick={() => setActiveTab('male')} className={`py-2 px-6 font-semibold transition-colors duration-300 ${activeTab === 'male' ? 'border-b-2 border-pink-600 text-pink-600' : 'text-gray-600'}`}>বর</button>
                     </div>
 
-                    {/* সার্চ এবং ফিল্টার */}
                     <div className="flex flex-col md:flex-row gap-4 items-center">
-                        {/* সার্চ ইনপুট */}
                         <div className="relative w-full md:w-1/2">
-                            <input 
+                            <input
                                 type="text"
                                 placeholder="নাম দিয়ে খুঁজুন..."
                                 value={searchTerm}
@@ -133,7 +109,6 @@ const AllProfiles = () => {
                             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                         </div>
 
-                        {/* ফিল্টার ড্রপডাউন */}
                         <div className="flex gap-4 w-full md:w-1/2">
                             <select name="religion" onChange={handleFilterChange} className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500">
                                 <option value="">সকল ধর্ম</option>
@@ -147,7 +122,6 @@ const AllProfiles = () => {
                     </div>
                 </div>
 
-                {/* প্রোফাইল গ্রিড */}
                 {filteredProfiles.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 sm:px-0">
                         {filteredProfiles.map(profile => (

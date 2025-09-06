@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import { FiMail, FiLock, FiAlertCircle } from 'react-icons/fi'; // আইকন ইম্পোর্ট
+import { FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // environment variable
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -14,15 +16,15 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(''); // সাবমিট করার আগে পুরোনো error মুছে ফেলা হলো
+        setError('');
 
         try {
-            const res = await axios.post('/api/auth/login', formData);
+            const res = await axios.post(`${API_BASE_URL}/api/auth/login`, formData);
             localStorage.setItem('token', res.data.token);
             navigate('/profiles');
         } catch (err) {
             setError('অবৈধ তথ্য। অনুগ্রহ করে আবার চেষ্টা করুন।');
-            console.error(err.response?.data || 'An error occurred');
+            console.error(err.response?.data || err.message || 'An error occurred');
         }
     };
 
@@ -30,7 +32,7 @@ const Login = () => {
         <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 flex items-center justify-center p-4">
             <div className="bg-white p-8 sm:p-10 rounded-2xl shadow-xl w-full max-w-md transform transition-all hover:shadow-2xl">
                 
-                <h2 className="text-3xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-indigo-pink">
+                <h2 className="text-3xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-indigo-600">
                     লগইন করুন
                 </h2>
 
@@ -60,7 +62,7 @@ const Login = () => {
                     
                     {/* পাসওয়ার্ড ইনপুট */}
                     <div className="relative">
-                         <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                             <FiLock className="text-gray-400" />
                         </span>
                         <input
@@ -83,7 +85,7 @@ const Login = () => {
                         </button>
                     </div>
 
-                     <p className="text-center text-gray-600 text-sm pt-4">
+                    <p className="text-center text-gray-600 text-sm pt-4">
                         আপনার কি অ্যাকাউন্ট নেই?{' '}
                         <Link to="/register" className="font-bold text-pink-600 hover:text-pink-800 hover:underline">
                             এখানে নিবন্ধন করুন

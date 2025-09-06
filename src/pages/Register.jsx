@@ -13,22 +13,24 @@ const Register = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         try {
-            await axios.post('/api/auth/register', formData);
-            navigate('/login'); // navigate to the login page in Bengali
+            await axios.post(`${API_BASE_URL}/api/auth/register`, formData);
+            navigate('/login'); // navigate to the login page
         } catch (err) {
             setError(err.response?.data?.msg || 'নিবন্ধন ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');
-            console.error(err.response?.data);
+            console.error(err.response?.data || err.message);
         }
     };
 
-    // Helper for styled input fields
     const renderInput = (name, label, type = 'text', placeholder = '') => (
         <div>
             <label htmlFor={name} className="block text-sm font-medium text-gray-600 mb-1">{label}</label>
@@ -44,7 +46,6 @@ const Register = () => {
         </div>
     );
 
-    // Helper for styled select fields
     const renderSelect = (name, label, options) => (
         <div>
              <label htmlFor={name} className="block text-sm font-medium text-gray-600 mb-1">{label}</label>
@@ -61,14 +62,12 @@ const Register = () => {
         </div>
     );
 
-    // Helper for section titles
     const SectionTitle = ({ icon, title }) => (
         <div className="flex items-center space-x-3 mb-6 border-b border-gray-200 pb-3">
             <div className="bg-pink-100 text-pink-600 p-2 rounded-full">{icon}</div>
             <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
         </div>
     );
-
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-pink-50 to-pink-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -119,7 +118,7 @@ const Register = () => {
                         <SectionTitle icon={<FiHeart size={20}/>} title="শারীরিক বিবরণ" />
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
                            {renderInput('height', 'উচ্চতা (সে.মি.)')}
-                           {renderSelect('bodyType', 'শারীরিক গঠন', ['পাতলা', 'رياضي', 'মাঝারি', 'ভারী'])}
+                           {renderSelect('bodyType', 'শারীরিক গঠন', ['পাতলা', 'رياضى', 'মাঝারি', 'ভারী'])}
                            {renderSelect('complexion', 'গাত্রবর্ণ', ['খুব ফর্সা', 'ফর্সা', 'শ্যামলা', 'কালো'])}
                         </div>
                     </div>
