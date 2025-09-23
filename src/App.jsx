@@ -28,7 +28,7 @@ const App = () => {
 
         {/* Protected Route */}
         <Route
-          path="/সম্পর্ক খুঁজুন"
+          path="/find-matches"
           element={
             <PrivateRoute>
               <AllProfiles />

@@ -57,7 +57,7 @@ const Navbar = () => {
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16 sm:h-20">
                         {/* Brand */}
-                        <Link to={isAuthenticated ? "/সম্পর্ক খুঁজুন" : "/"}>
+                        <Link to={isAuthenticated ? "/find-matches" : "/"}>
                             <img className='w-20 h-20' src="https://i.ibb.co/hGGSr7M/Whats-App-Image-2025-07-17-at-11-45-34-PM-removebg-preview.png" alt="SoulMate Logo" />
                         </Link>
 
@@ -67,7 +67,7 @@ const Navbar = () => {
                             {isAuthenticated && (
                                  <li>
                                     <Link
-                                        to="/সম্পর্ক খুঁজুন"
+                                        to="/find-matches"
                                         className="text-gray-700 hover:text-black transition-colors duration-200 py-2 px-3 rounded-md hover:bg-white/20 relative group"
                                     >
                                         সম্পর্ক খুঁজুন
@@ -146,7 +146,7 @@ const Navbar = () => {
                                 {isAuthenticated && (
                                      <li>
                                         <Link
-                                            to="/সম্পর্ক খুঁজুন"
+                                            to="/find-matches"
                                             onClick={() => setMenuOpen(false)}
                                             className="block text-gray-700 hover:text-black hover:bg-white/20 px-4 py-3 rounded-lg transition-all duration-200 transform hover:translate-x-2"
                                         >
