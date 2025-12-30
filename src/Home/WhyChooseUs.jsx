@@ -142,7 +142,7 @@ const WhyChooseUs = () => {
                   {/* Avatar 2 */}
                   <div className="w-10 h-10 rounded-full border-2 border-[#E8D1C5] bg-[#452829] overflow-hidden">
                     <img
-                      src="../../public/moslem-woman_9193915.png"
+                      src="/moslem-woman_9193915.png"
                       alt="User Avatar"
                       className="w-full h-full object-cover"
                     />

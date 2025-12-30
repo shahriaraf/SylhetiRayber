@@ -211,9 +211,6 @@ const Navbar = () => {
                                 রেজিস্ট্রেশন করুন
                             </Link>
                         )}
-                        <p className="text-center text-[#57595B]/60 text-xs mt-6 font-medium tracking-wide uppercase">
-                            SoulMate © 2024
-                        </p>
                     </div>
                 </div>
             </div>
