@@ -7,6 +7,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./components/PrivateRoute";
 import AllProfiles from "./pages/AllProfiles";
+import Contact from "./contact/Contact";
+import ProfileDetails from "./pages/ProfileDetails";
 
 const App = () => {
   const location = useLocation();
@@ -25,6 +27,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/contact" element={<Contact></Contact>} />
+        <Route path="/profile/:id" element={<ProfileDetails />} />
 
         {/* Protected Route */}
         <Route

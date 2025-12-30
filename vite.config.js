@@ -12,7 +12,7 @@ export default defineConfig({
       // string shorthand for simple cases
       // any request to a path starting with /api will be proxied
       '/api': {
-        target: 'https://syleti-rayber-backend.vercel.app', // Your backend server address
+        target: 'http://localhost:5000', // Your backend server address
         changeOrigin: true, // Recommended for virtual hosts
         secure: false,      // Can be needed if your backend is not HTTPS
       },

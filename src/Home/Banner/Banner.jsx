@@ -1,41 +1,54 @@
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
+  const slideInterval = useRef(null);
+
+  // --- COLOR PALETTE (Reference) ---
+  // Primary (Dark Maroon): #452829
+  // Accent (Rose Gold): #E8D1C5
+  // Text (Cream): #F3E8DF
 
   const images = [
-    'https://plus.unsplash.com/premium_photo-1670524465634-93cf255ffa8b?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YmFuZ2xhZGVzaGklMjB3ZWRkaW5nfGVufDB8fDB8fHww',
+    '../../../public/wedding.jpg',
     'https://www.nijolcreative.com/wp-content/uploads/2023/07/Nijol-creative-wedding-photography-services.jpg',
     'https://www.fearlessphotographers.com/images/photogs/Nipun-Hazra-414.jpg'
   ];
 
+  // UPDATED CONTENT: Matrimony Context
   const slideContent = [
     {
-      title: "মুহূর্ত ধারণ",
-      subtitle: "পেশাদার বিবাহ ফটোগ্রাফি",
-      description: "শিল্পমান দৃষ্টিভঙ্গি ও নিখুঁত দক্ষতায় চিরন্তন স্মৃতি রচনা"
+      title: "আস্থা ও সম্পর্কের বন্ধন",
+      subtitle: "বাংলাদেশের বিশ্বস্ত ম্যাট্রিমনি",
+      description: "লক্ষাধিক ভেরিফাইড প্রোফাইল থেকে খুঁজে নিন আপনার স্বপ্নের মানুষকে। আমরা বিশ্বাস করি প্রতিটি সম্পর্কই বিশেষ।"
     },
     {
-      title: "সৃজনশীল উৎকর্ষতা",
-      subtitle: "পুরস্কারপ্রাপ্ত ফটোগ্রাফি সেবা",
-      description: "চমৎকার ভিজ্যুয়ালের মাধ্যমে আপনার বিশেষ মুহূর্তগুলো জীবন্ত করে তোলা"
+      title: "আপনার গল্পের শুরু এখান থেকেই",
+      subtitle: "হাজারো সফল দম্পতি",
+      description: "ধর্মীয় ও পারিবারিক মূল্যবোধের ভিত্তিতে উপযুক্ত জীবনসঙ্গী খোঁজার সেরা মাধ্যম। আপনার সুখের ঠিকানায় আমরা আছি পাশে।"
     },
     {
-      title: "চিরন্তন শিল্প",
-      subtitle: "নির্ভীক ফটোগ্রাফি দৃষ্টিভঙ্গি",
-      description: "ভালোবাসার গল্পগুলোকে আবেগ ও সৃজনশীলতায় লিপিবদ্ধ করা"
+      title: "নিরাপদ ও গোপনীয়",
+      subtitle: "প্রিমিয়াম ম্যাচমেকিং সেবা",
+      description: "আপনার ব্যক্তিগত তথ্যের সর্বোচ্চ নিরাপত্তা নিশ্চিত করে, আধুনিক প্রযুক্তির সাহায্যে আমরা খুঁজে দিই পারফেক্ট ম্যাচ।"
     }
   ];
 
+  // Auto-slide logic with Pause on Hover
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % images.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [images.length]);
+    if (!isPaused && !isLoading) {
+      slideInterval.current = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % images.length);
+      }, 5000); 
+    }
+    return () => clearInterval(slideInterval.current);
+  }, [isPaused, isLoading, images.length]);
 
+  // Preload Images
   useEffect(() => {
     const preloadImages = async () => {
       const imagePromises = images.map((src) => {
@@ -55,7 +68,6 @@ const Banner = () => {
         setIsLoading(false);
       }
     };
-
     preloadImages();
   }, []);
 
@@ -67,98 +79,125 @@ const Banner = () => {
     setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
-
   if (isLoading) {
     return (
-      <div className="h-[90vh] bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-lg font-medium">লোড হচ্ছে...</p>
+      <div className="h-[90vh] bg-[#F3E8DF] flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <div className="w-16 h-16 border-4 border-[#E8D1C5] border-t-[#452829] rounded-full animate-spin mb-4"></div>
+          <span className="text-[#452829] font-medium tracking-widest text-sm uppercase">লোড হচ্ছে...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative h-[90vh] bg-black text-white overflow-hidden">
+    <div 
+      className="relative h-[90vh] bg-black text-white overflow-hidden group"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      {/* Slides Container */}
       <div className="relative w-full h-full">
-        <div className="relative w-full h-full">
-          {images.map((imgSrc, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-                index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-              }`}
-            >
+        {images.map((imgSrc, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            }`}
+          >
+            {/* Image with Ken Burns Effect (Slow Zoom) */}
+            <div className={`w-full h-full overflow-hidden`}>
               <img
                 src={imgSrc}
                 alt={`Slide ${index + 1}`}
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover transform transition-transform duration-[6000ms] ease-out ${
+                  index === currentSlide ? 'scale-110' : 'scale-100'
+                }`}
                 loading={index === 0 ? 'eager' : 'lazy'}
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-black/50"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-                  <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 transition-all duration-1000 ${
-                    index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                  }`}>
-                    {slideContent[index].title}
-                  </h1>
-                  <h2 className={`text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium mb-6 text-gray-200 transition-all duration-1000 delay-200 ${
-                    index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                  }`}>
-                    {slideContent[index].subtitle}
-                  </h2>
-                  <p className={`text-sm sm:text-base md:text-lg lg:text-xl mb-8 text-gray-300 max-w-2xl mx-auto transition-all duration-1000 delay-400 ${
-                    index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                  }`}>
-                    {slideContent[index].description}
-                  </p>
-                  <button className={`bg-white/20 backdrop-blur-sm text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-white/30 transition-all duration-300 font-medium text-sm sm:text-base border border-white/20 hover:border-white/40 transform hover:scale-105 active:scale-95 ${
-                    index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                  }`}
-                    style={{ transitionDelay: index === currentSlide ? '600ms' : '0ms' }}>
-                    আমাদের কাজ দেখুন
-                  </button>
+            </div>
+
+            {/* Cinematic Gradient Overlay */}
+            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+
+            {/* Content Layer */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+                
+                {/* Subtitle */}
+                <h3 className={`text-[#E8D1C5] text-xs sm:text-sm md:text-base font-bold tracking-[0.2em] uppercase mb-4 transition-all duration-700 ease-out transform ${
+                  index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+                }`}>
+                  {slideContent[index].subtitle}
+                </h3>
+
+                {/* Title */}
+                <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight transition-all duration-700 delay-200 ease-out transform ${
+                  index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}>
+                  {slideContent[index].title}
+                </h1>
+
+                {/* Description */}
+                <p className={`text-base sm:text-lg md:text-xl text-[#F3E8DF]/90 max-w-2xl mx-auto mb-10 leading-relaxed transition-all duration-700 delay-300 ease-out transform ${
+                  index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}>
+                  {slideContent[index].description}
+                </p>
+
+                {/* CTA Button */}
+                <div className={`transition-all duration-700 delay-500 ease-out transform ${
+                  index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}>
+                  <Link to='/register' className="group relative inline-flex items-center gap-3 bg-[#452829] text-[#F3E8DF] px-8 sm:px-10 py-4 rounded-full overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(232,209,197,0.3)] hover:-translate-y-1">
+                    <span className="relative z-10 font-semibold tracking-wide">সঙ্গী খুঁজুন</span>
+                    {/* Changed Icon to Heart for Matrimony context */}
+                    <Heart size={20} className="relative z-10 group-hover:scale-110 transition-transform duration-300 fill-transparent group-hover:fill-[#F3E8DF]" />
+                    {/* Hover Effect Layer */}
+                    <div className="absolute inset-0 bg-white/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                  </Link>
                 </div>
+
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-2 sm:p-3 rounded-full hover:bg-white/30 transition-all duration-300 border border-white/20 hover:border-white/40 group z-10"
-          aria-label="Previous slide"
-        >
-          <ChevronLeft size={20} className="group-hover:scale-110 transition-transform duration-200" />
-        </button>
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 sm:left-8 top-1/2 transform -translate-y-1/2 bg-black/20 backdrop-blur-md border border-white/10 text-white p-3 sm:p-4 rounded-full hover:bg-[#452829] hover:border-[#452829] transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-[-20px] group-hover:translate-x-0 z-20"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft size={24} />
+      </button>
 
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-2 sm:p-3 rounded-full hover:bg-white/30 transition-all duration-300 border border-white/20 hover:border-white/40 group z-10"
-          aria-label="Next slide"
-        >
-          <ChevronRight size={20} className="group-hover:scale-110 transition-transform duration-200" />
-        </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 sm:right-8 top-1/2 transform -translate-y-1/2 bg-black/20 backdrop-blur-md border border-white/10 text-white p-3 sm:p-4 rounded-full hover:bg-[#452829] hover:border-[#452829] transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-[20px] group-hover:translate-x-0 z-20"
+        aria-label="Next slide"
+      >
+        <ChevronRight size={24} />
+      </button>
 
-        <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 z-10">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 border-2 ${
-                index === currentSlide
-                  ? 'bg-white border-white scale-110'
-                  : 'bg-white/30 border-white/50 hover:bg-white/50 hover:border-white/70'
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
+      {/* Slide Indicators */}
+      <div className="absolute bottom-10 sm:bottom-20 left-1/2 transform -translate-x-1/2 flex items-center space-x-3 z-20">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`group relative h-1.5 rounded-full transition-all duration-500 ease-out overflow-hidden ${
+              index === currentSlide ? 'w-12 bg-[#E8D1C5]' : 'w-3 bg-white/30 hover:bg-white/60 hover:w-6'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          >
+            {index === currentSlide && !isPaused && (
+               <div className="absolute top-0 left-0 h-full bg-[#452829] animate-progress" />
+            )}
+          </button>
+        ))}
       </div>
 
       <style jsx>{`
@@ -166,15 +205,8 @@ const Banner = () => {
           0% { width: 0%; }
           100% { width: 100%; }
         }
-
-        .progress-bar {
-          animation: progress 4s linear infinite;
-        }
-
-        @media (max-width: 640px) {
-          .progress-bar {
-            animation: progress 4s linear infinite;
-          }
+        .animate-progress {
+          animation: progress 5000ms linear forwards;
         }
       `}</style>
     </div>
